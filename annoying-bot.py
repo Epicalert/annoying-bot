@@ -52,4 +52,5 @@ class Music(commands.Cog):
             ctx.voice_client.stop()
 
 bot.add_cog(Music(bot))
-bot.run("token")
+token = open("token.txt").read()
+bot.run(token)
