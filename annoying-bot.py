@@ -3,6 +3,8 @@ from discord.ext import commands
 from discord.ext.commands import Bot
 import asyncio
 
+import ttsfb5e
+
 bot = commands.Bot(command_prefix='oi mate ')
 
 @bot.event
@@ -10,14 +12,9 @@ async def on_ready():
     print("ready lol")
     await bot.change_presence(activity=discord.Game('with your sanity'))
 
-class Music(commands.Cog):
+class AnnoyingBot(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
-
-    @commands.command()
-    async def hai(self, ctx):
-        """hai"""
-        await ctx.send("hai :3")
 
     @commands.command()
     async def join(self, ctx):
@@ -31,16 +28,16 @@ class Music(commands.Cog):
         await channel.connect()
 
     @commands.command()
-    async def play(self, ctx, *, query):
+    async def say(self, ctx, *, query):
         """Plays a file from the local filesystem"""
 
-        source = discord.PCMVolumeTransformer(discord.FFmpegPCMAudio(query))
+        ttsfb5e.runTTS(query)
+
+        source = discord.PCMVolumeTransformer(discord.FFmpegPCMAudio("output.wav"))
         ctx.voice_client.play(source, after=lambda e: print('Player error: %s' % e) if e else None)
 
-        await ctx.send('Now playing: {}'.format(query))
 
-
-    @play.before_invoke
+    @say.before_invoke
     async def ensure_voice(self, ctx):
         if ctx.voice_client is None:
             if ctx.author.voice:
@@ -51,6 +48,6 @@ class Music(commands.Cog):
         elif ctx.voice_client.is_playing():
             ctx.voice_client.stop()
 
-bot.add_cog(Music(bot))
+bot.add_cog(AnnoyingBot(bot))
 token = open("token.txt").read()
 bot.run(token)
