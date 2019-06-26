@@ -3,10 +3,26 @@ from discord.ext import commands
 from discord.ext.commands import Bot
 import asyncio
 import random
+import os
 
 import ttsfbfe.tts
 
 bot = commands.Bot(command_prefix='oi mate ')
+
+
+async def annoyingAction_text(channel):
+    annoyingPhrasesFile = open("annoyingPhrases.txt")
+    annoyingPhrases = annoyingPhrasesFile.readlines()
+    annoyingPhrasesFile.close()
+        
+    await channel.send("@everyone " +annoyingPhrases[random.randint(0, len(annoyingPhrases) - 1)])
+
+async def annoyingAction_image(channel):
+    imageNames = os.listdir("images")
+    imageName = imageNames[random.randint(0, len(imageNames) - 1)]
+
+    await channel.send("@everyone", file=discord.File("images/"+imageName))
+
 
 def get_all_sendable_text_channels(self):
     outlist = []
@@ -23,19 +39,18 @@ async def on_ready():
 
 async def random_annoyance(self):
     await self.wait_until_ready()
-    print("random annoyances will start in 1 minute.")
-    await asyncio.sleep(60)
+    print("random annoyances will start in 10 seconds.")
+    await asyncio.sleep(10)
     while not self.is_closed():
         availableTextChannels = get_all_sendable_text_channels(self)
         channel = availableTextChannels[random.randint(0, len(availableTextChannels) - 1)]
 
         seversJoined = len(self.guilds)
 
-        annoyingPhrasesFile = open("annoyingPhrases.txt")
-        annoyingPhrases = annoyingPhrasesFile.readlines()
-        annoyingPhrasesFile.close()
-        
-        await channel.send("@everyone " +annoyingPhrases[random.randint(0, len(annoyingPhrases) - 1)])
+        if random.randint(0,1) == 0:
+            await annoyingAction_text(channel)
+        else:
+            await annoyingAction_image(channel)
 
         waittime = random.randint(int(15/seversJoined), int(1800/seversJoined))
         print("annoyance sent to " +channel.guild.name +"." +channel.name +"; next annoyance in " +str(waittime) +" seconds.")
