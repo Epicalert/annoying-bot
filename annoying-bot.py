@@ -30,8 +30,12 @@ async def random_annoyance(self):
         channel = availableTextChannels[random.randint(0, len(availableTextChannels) - 1)]
 
         seversJoined = len(self.guilds)
+
+        annoyingPhrasesFile = open("annoyingPhrases.txt")
+        annoyingPhrases = annoyingPhrasesFile.readlines()
+        annoyingPhrasesFile.close()
         
-        await channel.send("@everyone hey im supposed to do some annoying thing but idk")
+        await channel.send("@everyone " +annoyingPhrases[random.randint(0, len(annoyingPhrases) - 1)])
 
         waittime = random.randint(int(15/seversJoined), int(1800/seversJoined))
         print("annoyance sent to " +channel.guild.name +"." +channel.name +"; next annoyance in " +str(waittime) +" seconds.")
