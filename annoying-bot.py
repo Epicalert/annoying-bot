@@ -2,6 +2,7 @@ import discord
 from discord.ext import commands
 from discord.ext.commands import Bot
 import asyncio
+import random
 
 import ttsfbfe.tts
 
@@ -11,6 +12,13 @@ bot = commands.Bot(command_prefix='oi mate ')
 async def on_ready():
     print("ready lol")
     await bot.change_presence(activity=discord.Game('with your sanity'))
+
+async def random_annoyance(self):
+    await self.wait_until_ready()
+    channel = self.get_channel(0) # TODO: get random channel from list
+    while not self.is_closed():
+        await channel.send("@everyone hey im supposed to do some annoying thing but idk")
+        await asyncio.sleep(random.randint(15, 10800))
 
 class AnnoyingBot(commands.Cog):
     def __init__(self, bot):
@@ -49,5 +57,6 @@ class AnnoyingBot(commands.Cog):
             ctx.voice_client.stop()
 
 bot.add_cog(AnnoyingBot(bot))
+bot.loop.create_task(random_annoyance(bot))
 token = open("token.txt").read()
 bot.run(token)
