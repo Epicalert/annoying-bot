@@ -8,12 +8,7 @@ import soundfile as sf
 
 import ttsfbfe.tts
 
-disconnectVoiceQueue = []
-
 bot = commands.Bot(command_prefix='oi mate ')
-
-def queueDisconnectVoice(guild):
-    disconnectVoiceQueue = disconnectVoiceQueue + [guild]
 
 def get_all_sendable_text_channels(self):
     outlist = []
