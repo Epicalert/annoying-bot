@@ -3,7 +3,7 @@ from discord.ext import commands
 from discord.ext.commands import Bot
 import asyncio
 
-import ttsfb5e
+import ttsfbfe.tts
 
 bot = commands.Bot(command_prefix='oi mate ')
 
@@ -31,7 +31,7 @@ class AnnoyingBot(commands.Cog):
     async def say(self, ctx, *, query):
         """Plays a file from the local filesystem"""
 
-        ttsfb5e.runTTS(query)
+        ttsfbfe.tts.runTTS(query)
 
         source = discord.PCMVolumeTransformer(discord.FFmpegPCMAudio("output.wav"))
         ctx.voice_client.play(source, after=lambda e: print('Player error: %s' % e) if e else None)

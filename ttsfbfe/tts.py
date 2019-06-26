@@ -1,7 +1,15 @@
 import soundfile as sf
 import numpy as np
 import os
+from os import path
 import sys
+
+pathprefix = path.dirname(__file__)
+
+print(__file__)
+
+if pathprefix != "":
+    pathprefix = pathprefix + "/"
 
 def buildDict(path):
     dictFile = open(path)
@@ -74,7 +82,7 @@ def synthesizeSyllable(phonemeList, stressed):
 
             firstVowelDone = True
 
-        fullPath = "phonemes/" +path +phoneme +".ogg"
+        fullPath = pathprefix +"phonemes/" +path +phoneme +".ogg"
 
         if os.path.isfile(fullPath):
             audiodata, samplerate = sf.read(fullPath)
@@ -90,8 +98,8 @@ def synthesizeSyllable(phonemeList, stressed):
 
     return outputFrames, samplerate
 
-def runTTS(inputString):
-    inputString = getPronunciation(inputString.lower())     #TODO: option for raw phoneme input
+def runTTS(query):
+    inputString = getPronunciation(query.lower())     #TODO: option for raw phoneme input
     inputString = inputString.replace("%", "")    #TODO: add support for secondary stress
     inputString = inputString.replace(":", "")      #TODO: add support for syllable length
     inputString = inputString.replace(" ", "")
@@ -124,12 +132,14 @@ def runTTS(inputString):
         sf.write("output.wav", synthesizedOutput, samplerate)
 
 
-dictionary = buildDict("cmudict-0.7b-xsampa.txt")
+dictionary = buildDict(pathprefix +"cmudict-0.7b-xsampa.txt")
 
-consonantList = os.listdir("phonemes/consonant")
+#TODO: load phonemes from zip file because WINDOWS CAN'T TELL THE DIFFERENCE BETWEEN UPPERCASE AND LOWERCASE FILENAMES >:CCCC
+
+consonantList = os.listdir(pathprefix +"phonemes/consonant")
 consonantList = list(map(lambda item: item.replace(".ogg", ""), consonantList))
 
-vowelList = os.listdir("phonemes/stressed") + os.listdir("phonemes/unstressed")
+vowelList = os.listdir(pathprefix +"phonemes/stressed") + os.listdir(pathprefix +"phonemes/unstressed")
 vowelList = list(map(lambda item: item.replace(".ogg", ""), vowelList))
 
 combinedList = vowelList + consonantList
