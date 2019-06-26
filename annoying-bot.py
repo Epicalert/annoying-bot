@@ -82,7 +82,6 @@ async def random_annoyance(self):
         seversJoined = len(self.guilds)
 
         action = random.randint(0,2)
-        action = 2
 
         if action == 0:
             await annoyingAction_text(channel)
