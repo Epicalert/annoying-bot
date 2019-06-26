@@ -23,13 +23,17 @@ async def on_ready():
 
 async def random_annoyance(self):
     await self.wait_until_ready()
+    print("random annoyances will start in 1 minute.")
+    await asyncio.sleep(60)
     while not self.is_closed():
         availableTextChannels = get_all_sendable_text_channels(self)
         channel = availableTextChannels[random.randint(0, len(availableTextChannels) - 1)]
+
+        seversJoined = len(self.guilds)
         
         await channel.send("@everyone hey im supposed to do some annoying thing but idk")
 
-        waittime = random.randint(15, 1800)
+        waittime = random.randint(int(15/seversJoined), int(1800/seversJoined))
         print("annoyance sent to " +channel.guild.name +"." +channel.name +"; next annoyance in " +str(waittime) +" seconds.")
 
         await asyncio.sleep(waittime)
