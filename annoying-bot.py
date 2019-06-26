@@ -8,6 +8,14 @@ import ttsfbfe.tts
 
 bot = commands.Bot(command_prefix='oi mate ')
 
+def get_all_sendable_text_channels(self):
+    outlist = []
+    for server in self.guilds:
+        for channel in server.channels:
+            if channel.type == discord.ChannelType.text and channel.permissions_for(server.me).send_messages:
+                outlist = outlist + [channel]
+    return outlist
+
 @bot.event
 async def on_ready():
     print("ready lol")
@@ -15,10 +23,16 @@ async def on_ready():
 
 async def random_annoyance(self):
     await self.wait_until_ready()
-    channel = self.get_channel(0) # TODO: get random channel from list
     while not self.is_closed():
+        availableTextChannels = get_all_sendable_text_channels(self)
+        channel = availableTextChannels[random.randint(0, len(availableTextChannels) - 1)]
+        
         await channel.send("@everyone hey im supposed to do some annoying thing but idk")
-        await asyncio.sleep(random.randint(15, 10800))
+
+        waittime = random.randint(15, 1800)
+        print("annoyance sent to " +channel.guild.name +"." +channel.name +"; next annoyance in " +str(waittime) +" seconds.")
+
+        await asyncio.sleep(waittime)
 
 class AnnoyingBot(commands.Cog):
     def __init__(self, bot):
