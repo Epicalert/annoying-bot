@@ -9,7 +9,9 @@
 #HASH-MARK	"h{%mA:rk
 #POUND-SIGN	"paUnd%saIn
 #SHARP-SIGN	"SA:rp%saIn
+%	pE`"sEnt
 %PERCENT	pE`"sEnt
+&	"{nd
 &AMPERSAND	"{mpE`%s{nd
 'ALLO	%A:"loU
 'APOSTROPHE	@"pA:str@fi
@@ -50,8 +52,10 @@
 )PARENS	pE`"Enz
 )RIGHT-PAREN	"raIt%pEr@n
 )UN-PARENTHESES	"VnpE`"EnT@"si:z
++	"plUs
 +PLUS	"plUs
 ,COMMA	"kA:m@
+-	"d{S
 --DASH	"d{S
 -DASH	"d{S
 -HYPHEN	"haIf@n
@@ -61,9 +65,24 @@
 .FULL-STOP	"fUl"stA:p
 .PERIOD	"pIri:@d
 .POINT	"pOInt
+/	"sl{S
 /SLASH	"sl{S
+0	"zi:roU
+1	"wVn
+2	"tu:
+2-D	"tu:%di:
+2D	"tu:%di:
+3	"Tri:
 3-D	"Tri:%di:
 3D	"Tri:%di:
+4	"fOr
+4-D	"fOr%di:
+4D	"fOr%di:
+5	"faIv
+6	"sIks
+7	"sEv@n
+8	"eIt
+9	"naIn
 :COLON	"koUl@n
 ;SEMI-COLON	"sEmi:"koUl@n, "sEmI%koUl@n
 ?QUESTION-MARK	"kwEstS@n"mA:rk
