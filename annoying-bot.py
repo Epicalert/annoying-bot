@@ -121,6 +121,10 @@ class AnnoyingBot(commands.Cog):
         source = discord.PCMVolumeTransformer(discord.FFmpegPCMAudio("output.wav"))
         ctx.voice_client.play(source, after=lambda e: print('Player error: %s' % e) if e else None)
 
+    @commands.command()
+    async def leave(self, ctx):
+        if ctx.voice_client is not None:
+            await ctx.voice_client.disconnect()
 
     @say.before_invoke
     async def ensure_voice(self, ctx):
