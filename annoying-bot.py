@@ -92,7 +92,7 @@ async def random_annoyance(self):
             await annoyingAction_voice(channel)
 
 
-        waittime = random.randint(int(15/seversJoined), int(1800/seversJoined))
+        waittime = random.randint(int(15/seversJoined), int(900/seversJoined))
         print("annoyance sent to " +channel.guild.name +"." +channel.name +"; next annoyance in " +str(waittime) +" seconds.")
 
         await asyncio.sleep(waittime)
