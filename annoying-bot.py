@@ -61,24 +61,26 @@ def getRandomVoiceChannel(self):
     availableChannels = get_all_occupied_enterable_voice_channels(self)
     return availableChannels[random.randint(0, len(availableChannels) - 1)]
 
-async def annoyingAction_text(self):
-    channel = getRandomTextChannel(self)
+async def annoyingAction_text(self, channel=None, mentionString="@everyone"):
+    if channel == None:
+        channel = getRandomTextChannel(self)
 
     annoyingPhrasesFile = open("annoyingPhrases.txt")
     annoyingPhrases = annoyingPhrasesFile.readlines()
     annoyingPhrasesFile.close()
         
-    await channel.send("@everyone " +annoyingPhrases[random.randint(0, len(annoyingPhrases) - 1)])
+    await channel.send(mentionString +" " +annoyingPhrases[random.randint(0, len(annoyingPhrases) - 1)])
 
     return channel
 
-async def annoyingAction_image(self):
-    channel = getRandomTextChannel(self)
+async def annoyingAction_image(self, channel=None, mentionString="@everyone"):
+    if channel == None:
+        channel = getRandomTextChannel(self)
 
     imageNames = os.listdir("images")
     imageName = imageNames[random.randint(0, len(imageNames) - 1)]
 
-    await channel.send("@everyone", file=discord.File("images/"+imageName))
+    await channel.send(mentionString, file=discord.File("images/"+imageName))
 
     return channel
 
@@ -161,10 +163,23 @@ async def targeted_annoyance(self, target, actions):
         await target.create_dm()
 
     for i in range(actions):
-        if target.voice != None:
+        maxAction = 3
+        if target.voice == None:
+            maxAction = 2
+            
+
+        action = random.randint(0, maxAction)
+
+        if action == 0:
+            await target.dm_channel.send(target.mention)
+        elif action == 1:
+            await annoyingAction_text(self, target.dm_channel, target.mention)
+        elif action == 2:
+            await annoyingAction_image(self, target.dm_channel, target.mention)
+        else:
             await annoyingAction_voice(self, target.voice.channel)
 
-        await target.dm_channel.send(target.mention)
+        
         await asyncio.sleep(random.randint(2, 10))
 
 
@@ -175,7 +190,6 @@ class AnnoyingBot(commands.Cog):
     @commands.command()
     async def target(self, ctx):
         roulette = random.randint(0, 1024)
-        roulette = 770
 
         if ctx.message.mention_everyone or ctx.message.mentions[0].id == self.bot.user.id:
             await ctx.channel.send("no u")
