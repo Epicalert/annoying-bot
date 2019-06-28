@@ -222,13 +222,15 @@ class AnnoyingBot(commands.Cog):
                 return
             
             await ctx.channel.send(ctx.author.mention +" https://www.youtube.com/watch?v=Xrne2-gOoqU")
+            await ctx.channel.send(ctx.author.mention +"you're gettin banned >:D")
             await asyncio.sleep(5)
             await ctx.guild.ban(ctx.message.author, reason="bc why not *dab*")
             return
         else:
             if target.administrator:
                 return
-            
+            await ctx.channel.send(ctx.author.mention +" :regional_indicator_b: :regional_indicator_a: :regional_indicator_n: :hammer: ")
+            await asyncio.sleep(10)
             await ctx.guild.ban(target, reason="bc why not *dab*")
             return
 
