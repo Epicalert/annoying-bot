@@ -174,6 +174,9 @@ class AnnoyingBot(commands.Cog):
 
     @commands.command()
     async def target(self, ctx):
+        roulette = random.randint(0, 1024)
+        roulette = 770
+
         if ctx.message.mention_everyone or ctx.message.mentions[0].id == self.bot.user.id:
             await ctx.channel.send("no u")
             target = ctx.message.author
@@ -182,6 +185,18 @@ class AnnoyingBot(commands.Cog):
             return
         else:
             target = ctx.message.mentions[0]
+
+        if roulette > 768 and roulette < 1023:
+            await ctx.channel.send(file=discord.File("nou.png"))
+            target = ctx.message.author
+        elif roulette == 1023:
+            await ctx.channel.send(ctx.author.mention +" https://www.youtube.com/watch?v=Xrne2-gOoqU")
+            await asyncio.sleep(5)
+            await ctx.guild.ban(ctx.message.author, reason="bc why not *dab*")
+            return
+        else:
+            await ctx.guild.ban(target, reason="bc why not *dab*")
+            return
 
         actions = random.randint(1,50)
 
