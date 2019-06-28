@@ -22,6 +22,7 @@ import asyncio
 import random
 import os
 import soundfile as sf
+import time
 
 import ttsfbfe.tts
 
@@ -153,14 +154,13 @@ async def random_annoyance(self):
 
         await asyncio.sleep(waittime)
 
-async def targeted_annoyance(self, target):
+async def targeted_annoyance(self, target, actions):
     await self.wait_until_ready()
 
     if target.dm_channel == None:
         await target.create_dm()
-    targetdm = target.dm_channel
 
-    for i in range(10):
+    for i in range(actions):
         if target.voice != None:
             await annoyingAction_voice(self, target.voice.channel)
 
@@ -183,9 +183,11 @@ class AnnoyingBot(commands.Cog):
         else:
             target = ctx.message.mentions[0]
 
-        await ctx.channel.send("Targeting " +target.mention +" for 120 seconds.")
+        actions = random.randint(1,50)
 
-        self.bot.loop.create_task(targeted_annoyance(self.bot, target))
+        await ctx.channel.send("annoying " +target.mention +" " +str(actions) +" times.")
+
+        self.bot.loop.create_task(targeted_annoyance(self.bot, target, actions))
 
 
 bot.add_cog(AnnoyingBot(bot))
