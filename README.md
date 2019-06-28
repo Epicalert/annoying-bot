@@ -1,5 +1,5 @@
 # AnnoyingBot
-your little brother but in bot form.
+Your little brother but in bot form.
 
 Originally made for [Discord Hack Week 2019.](https://blog.discordapp.com/discord-community-hack-week-build-and-create-alongside-us-6b2a7b7bba33)
 
@@ -28,6 +28,9 @@ AnnoyingBot also depends on the following Python modules
 - [discordpy](https://github.com/Rapptz/discord.py)
 - [soundfile](https://github.com/bastibe/SoundFile)
 - [numpy](https://www.numpy.org/)
+
+## Configuration
+You can disable certain features or change send intervals in the `config.ini` file. Additional information can be found in `config.ini`.
 
 ---
 Copyright 2019 Amado Wilkins & Justin Mendoza
