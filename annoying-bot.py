@@ -68,7 +68,9 @@ async def annoyingAction_image(self):
 
     await channel.send("@everyone", file=discord.File("images/"+imageName))
 
-async def annoyingAction_voice(channel):
+async def annoyingAction_voice(self):
+    channel = getRandomVoiceChannel(self)
+
     await channel.connect()
 
     annoyingPhrasesFile = open("annoyingPhrases.txt")
@@ -88,7 +90,9 @@ async def annoyingAction_voice(channel):
 
     await channel.guild.voice_client.disconnect()
 
-async def annoyingAction_voiceKick(channel):
+async def annoyingAction_voiceKick(self):
+    channel = getRandomVoiceChannel(self)
+
     memberToKick = random.choice(channel.members)
 
     await memberToKick.edit(voice_channel=None)
@@ -103,30 +107,23 @@ async def random_annoyance(self):
     print("random annoyances will start in 10 seconds.")
     await asyncio.sleep(10)
 
-    textAnnoyances = [annoyingAction_text(self), annoyingAction_image(self)]
-    voiceAnnoyances = [annoyingAction_voice(self), annoyingAction_voiceKick(self)]
-
     while not self.is_closed():
-        channel = getRandomTextChannel(self)
-
         seversJoined = len(self.guilds)
 
         action = random.randint(0,3)
 
         if action == 0:
-            await annoyingAction_text(channel)
+            await annoyingAction_text(self)
         elif action == 1:
-            await annoyingAction_image(channel)
+            await annoyingAction_image(self)
         elif action == 2:
-            channel = getRandomVoiceChannel(self)
-            await annoyingAction_voice(channel)
+            await annoyingAction_voice(self)
         else:
-            channel = getRandomVoiceChannel(self)
-            await annoyingAction_voiceKick(channel)
+            await annoyingAction_voiceKick(self)
 
 
         waittime = random.randint(int(15/seversJoined), int(900/seversJoined))
-        print("annoyance sent to " +channel.guild.name +"." +channel.name +"; next annoyance in " +str(waittime) +" seconds.")
+        print("annoyance sent; next annoyance in " +str(waittime) +" seconds.")
 
         await asyncio.sleep(waittime)
 
