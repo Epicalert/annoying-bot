@@ -23,8 +23,12 @@ import random
 import os
 import soundfile as sf
 import time
+import configparser
 
 import ttsfbfe.tts
+
+conf = configparser.ConfigParser()
+conf.read("config.ini")
 
 bot = commands.Bot(command_prefix='oi mate ')
 bot.remove_command("help")
@@ -87,6 +91,9 @@ async def annoyingAction_image(self, channel=None, mentionString="@everyone"):
 async def annoyingAction_voice(self, channel=None):
     if channel == None:
         channel = getRandomVoiceChannel(self)
+
+    if conf["features"]["voice_tts"] != "true":
+        return channel
 
     if channel.guild.voice_client != None:
         return channel
@@ -151,7 +158,7 @@ async def random_annoyance(self):
         else:
             channel = await annoyingAction_voiceKick(self)
 
-        waittime = random.randint(int(5/seversJoined), int(60/seversJoined))
+        waittime = random.randint(int(int(conf["random"]["interval_min"])/seversJoined), int(int(conf["random"]["interval_max"])/seversJoined))
         print(annoyanceNames[action] +" sent to " +channel.guild.name +"." +channel.name +"(" +str(channel.id) +"); next annoyance in " +str(waittime) +" seconds.")
 
         await asyncio.sleep(waittime)
@@ -180,7 +187,7 @@ async def targeted_annoyance(self, target, actions):
             await annoyingAction_voice(self, target.voice.channel)
 
         
-        await asyncio.sleep(random.randint(2, 10))
+        await asyncio.sleep(random.randint(int(conf["targeted"]["interval_min"]), int(conf["targeted"]["interval_max"])))
 
 
 class AnnoyingBot(commands.Cog):
@@ -189,7 +196,14 @@ class AnnoyingBot(commands.Cog):
 
     @commands.command()
     async def target(self, ctx):
-        roulette = random.randint(0, 1024)
+        if conf["features"]["targeted"] != "true":
+            await ctx.channel.send(ctx.message.author.mention +" sorry dat disabled ¯\_(ツ)_/¯")
+            return
+
+        if conf["features"]["ban_roulette"] == "true":
+            roulette = random.randint(0, 1024)
+        else:
+            roulette = 0
 
         if ctx.message.mention_everyone or ctx.message.mentions[0].id == self.bot.user.id:
             await ctx.channel.send("no u")
@@ -220,6 +234,7 @@ class AnnoyingBot(commands.Cog):
 
 
 bot.add_cog(AnnoyingBot(bot))
-bot.loop.create_task(random_annoyance(bot))
+if conf["features"]["random"] == "true":
+    bot.loop.create_task(random_annoyance(bot))
 token = open("token.txt").read()
 bot.run(token)
