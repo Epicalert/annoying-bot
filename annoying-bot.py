@@ -122,10 +122,16 @@ async def random_annoyance(self):
     print("random annoyances will start in 10 seconds.")
     await asyncio.sleep(10)
     annoyanceNames = ["text phrase", "image", "voice phrase", "voice kick"]
+    VOICE_ACTIONS_START = 2 #set to first index of annoyanceNames that contains a voice channel action
+    #NOTE: ALL VOICE ACTIONS SHOULD COME AFTER TEXT CHANNEL ACTIONS
     while not self.is_closed():
         seversJoined = len(self.guilds)
 
-        action = random.randint(0,3)
+        if get_all_occupied_enterable_voice_channels(self) == []:
+            action = random.randint(0,VOICE_ACTIONS_START - 1)
+        else:
+            action = random.randint(0,len(annoyanceNames) - 1)
+
 
         if action == 0:
             channel = await annoyingAction_text(self)
