@@ -39,6 +39,8 @@ You can add your own annoying messages to send in `annoyingPhrases.txt`, and add
 In addition to the python modules above, AnnoyingBot uses the following open source library:
 - [TTS!!!!!](https://github.com/Epicalert/tts-followed-by-5-exclamation-marks)
 
+You don't need to manually install it as it is included in the repository.
+
 ## Contributors
 - Amado Wilkins (@iiルビ#9624)
 - Justin Mendoza (@iiShattered#9775)
