@@ -122,7 +122,7 @@ async def random_annoyance(self):
             await annoyingAction_voiceKick(self)
 
 
-        waittime = random.randint(int(15/seversJoined), int(900/seversJoined))
+        waittime = random.randint(int(5/seversJoined), int(60/seversJoined))
         print("annoyance sent; next annoyance in " +str(waittime) +" seconds.")
 
         await asyncio.sleep(waittime)
