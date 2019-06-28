@@ -67,6 +67,11 @@ async def annoyingAction_voice(channel):
 
     await channel.guild.voice_client.disconnect()
 
+async def annoyingAction_voiceKick(channel):
+    memberToKick = random.choice(channel.members)
+
+    await memberToKick.edit(voice_channel=None)
+
 @bot.event
 async def on_ready():
     print("ready lol")
@@ -81,15 +86,18 @@ async def random_annoyance(self):
 
         seversJoined = len(self.guilds)
 
-        action = random.randint(0,2)
+        action = random.randint(0,3)
 
         if action == 0:
             await annoyingAction_text(channel)
         elif action == 1:
             await annoyingAction_image(channel)
-        else:
+        elif action == 2:
             channel = getRandomVoiceChannel(self)
             await annoyingAction_voice(channel)
+        else:
+            channel = getRandomVoiceChannel(self)
+            await annoyingAction_voiceKick(channel)
 
 
         waittime = random.randint(int(15/seversJoined), int(900/seversJoined))
@@ -137,7 +145,7 @@ class AnnoyingBot(commands.Cog):
         elif ctx.voice_client.is_playing():
             ctx.voice_client.stop()
 
-bot.add_cog(AnnoyingBot(bot))
+#bot.add_cog(AnnoyingBot(bot))
 bot.loop.create_task(random_annoyance(bot))
 token = open("token.txt").read()
 bot.run(token)
