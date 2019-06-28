@@ -32,6 +32,10 @@ AnnoyingBot also depends on the following Python modules
 ## Configuration
 You can disable certain features or change send intervals in the `config.ini` file. Additional information can be found in `config.ini`.
 
+## Third Party Libraries
+In addition to the python modules above, AnnoyingBot uses the following open source library:
+- [TTS!!!!!](https://github.com/Epicalert/tts-followed-by-5-exclamation-marks)
+
 ---
 Copyright 2019 Amado Wilkins & Justin Mendoza
 
