@@ -1,3 +1,20 @@
+#    AnnoyingBot
+#    https://github.com/Epicalert/annoying-bot
+#
+#    Copyright 2019 Amado Wilkins & Justin Mendoza
+#
+#    Licensed under the Apache License, Version 2.0 (the "License");
+#    you may not use this file except in compliance with the License.
+#    You may obtain a copy of the License at
+#
+#        http://www.apache.org/licenses/LICENSE-2.0
+#
+#    Unless required by applicable law or agreed to in writing, software
+#    distributed under the License is distributed on an "AS IS" BASIS,
+#    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+#    See the License for the specific language governing permissions and
+#    limitations under the License.
+
 import discord
 from discord.ext import commands
 from discord.ext.commands import Bot
@@ -34,14 +51,18 @@ def getRandomVoiceChannel(self):
     availableChannels = get_all_occupied_enterable_voice_channels(self)
     return availableChannels[random.randint(0, len(availableChannels) - 1)]
 
-async def annoyingAction_text(channel):
+async def annoyingAction_text(self):
+    channel = getRandomTextChannel(self)
+
     annoyingPhrasesFile = open("annoyingPhrases.txt")
     annoyingPhrases = annoyingPhrasesFile.readlines()
     annoyingPhrasesFile.close()
         
     await channel.send("@everyone " +annoyingPhrases[random.randint(0, len(annoyingPhrases) - 1)])
 
-async def annoyingAction_image(channel):
+async def annoyingAction_image(self):
+    channel = getRandomTextChannel(self)
+
     imageNames = os.listdir("images")
     imageName = imageNames[random.randint(0, len(imageNames) - 1)]
 
@@ -81,6 +102,10 @@ async def random_annoyance(self):
     await self.wait_until_ready()
     print("random annoyances will start in 10 seconds.")
     await asyncio.sleep(10)
+
+    textAnnoyances = [annoyingAction_text(self), annoyingAction_image(self)]
+    voiceAnnoyances = [annoyingAction_voice(self), annoyingAction_voiceKick(self)]
+
     while not self.is_closed():
         channel = getRandomTextChannel(self)
 
