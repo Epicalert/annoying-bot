@@ -36,6 +36,10 @@ You can disable certain features or change send intervals in the `config.ini` fi
 In addition to the python modules above, AnnoyingBot uses the following open source library:
 - [TTS!!!!!](https://github.com/Epicalert/tts-followed-by-5-exclamation-marks)
 
+## Contributors
+- Amado Wilkins (@iiルビ#9624)
+- Justin Mendoza (@iiShattered#9775)
+
 ---
 Copyright 2019 Amado Wilkins & Justin Mendoza
 
