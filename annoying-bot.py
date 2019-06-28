@@ -26,6 +26,13 @@ import soundfile as sf
 import ttsfbfe.tts
 
 bot = commands.Bot(command_prefix='oi mate ')
+bot.remove_command("help")
+
+@bot.command()
+async def help(ctx):
+    await ctx.channel.send("@everyone\nnoone can save you from me")
+    await asyncio.sleep(5)
+    await ctx.channel.send("@everyone\nyou can check out my github tho\nhttps://github.com/Epicalert/annoying-bot")
 
 def get_all_sendable_text_channels(self):
     outlist = []
@@ -60,6 +67,8 @@ async def annoyingAction_text(self):
         
     await channel.send("@everyone " +annoyingPhrases[random.randint(0, len(annoyingPhrases) - 1)])
 
+    return channel
+
 async def annoyingAction_image(self):
     channel = getRandomTextChannel(self)
 
@@ -67,6 +76,8 @@ async def annoyingAction_image(self):
     imageName = imageNames[random.randint(0, len(imageNames) - 1)]
 
     await channel.send("@everyone", file=discord.File("images/"+imageName))
+
+    return channel
 
 async def annoyingAction_voice(self):
     channel = getRandomVoiceChannel(self)
@@ -90,12 +101,16 @@ async def annoyingAction_voice(self):
 
     await channel.guild.voice_client.disconnect()
 
+    return channel
+
 async def annoyingAction_voiceKick(self):
     channel = getRandomVoiceChannel(self)
 
     memberToKick = random.choice(channel.members)
 
     await memberToKick.edit(voice_channel=None)
+
+    return channel
 
 @bot.event
 async def on_ready():
@@ -106,24 +121,23 @@ async def random_annoyance(self):
     await self.wait_until_ready()
     print("random annoyances will start in 10 seconds.")
     await asyncio.sleep(10)
-
+    annoyanceNames = ["text phrase", "image", "voice phrase", "voice kick"]
     while not self.is_closed():
         seversJoined = len(self.guilds)
 
         action = random.randint(0,3)
 
         if action == 0:
-            await annoyingAction_text(self)
+            channel = await annoyingAction_text(self)
         elif action == 1:
-            await annoyingAction_image(self)
+            channel = await annoyingAction_image(self)
         elif action == 2:
-            await annoyingAction_voice(self)
+            channel = await annoyingAction_voice(self)
         else:
-            await annoyingAction_voiceKick(self)
-
+            channel = await annoyingAction_voiceKick(self)
 
         waittime = random.randint(int(5/seversJoined), int(60/seversJoined))
-        print("annoyance sent; next annoyance in " +str(waittime) +" seconds.")
+        print(annoyanceNames[action] +" sent to " +channel.guild.name +"." +channel.name +"(" +str(channel.id) +"); next annoyance in " +str(waittime) +" seconds.")
 
         await asyncio.sleep(waittime)
 
