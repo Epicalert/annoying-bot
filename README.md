@@ -30,7 +30,10 @@ AnnoyingBot also depends on the following Python modules
 - [numpy](https://www.numpy.org/)
 
 ## Configuration
-You can disable certain features or change send intervals in the `config.ini` file. Additional information can be found in `config.ini`.
+You can disable certain features or change send intervals in the `config.ini` file. Additional information can be found in `config.ini`. You will need to restart the bot to apply any changes made to the configuration file.
+
+## Custom Messages
+You can add your own annoying messages to send in `annoyingPhrases.txt`, and add images in the `images` directory. Changes to these don't require a bot restart.
 
 ## Third Party Libraries
 In addition to the python modules above, AnnoyingBot uses the following open source library:
