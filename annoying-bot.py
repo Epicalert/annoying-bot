@@ -218,7 +218,7 @@ class AnnoyingBot(commands.Cog):
             await ctx.channel.send(file=discord.File("nou.png"))
             target = ctx.message.author
         elif roulette == 1023:
-            if ctx.author.administrator:
+            if ctx.author.permissions_in(ctx.channel).administrator:
                 return
             
             await ctx.channel.send(ctx.author.mention +" https://www.youtube.com/watch?v=Xrne2-gOoqU")
@@ -227,7 +227,7 @@ class AnnoyingBot(commands.Cog):
             await ctx.guild.ban(ctx.message.author, reason="bc why not *dab*")
             return
         else:
-            if target.administrator:
+            if target.permissions_in(ctx.channel).administrator:
                 return
             await ctx.channel.send(ctx.author.mention +" :regional_indicator_b: :regional_indicator_a: :regional_indicator_n: :hammer: ")
             await asyncio.sleep(10)
