@@ -33,6 +33,8 @@ async def help(ctx):
     await ctx.channel.send("@everyone\nnoone can save you from me")
     await asyncio.sleep(5)
     await ctx.channel.send("@everyone\nyou can check out my github tho\nhttps://github.com/Epicalert/annoying-bot")
+    await asyncio.sleep(5)
+    await ctx.channel.send("@everyone\n or target someone e.g. `oi mate target @someone`")
 
 def get_all_sendable_text_channels(self):
     outlist = []
@@ -79,8 +81,12 @@ async def annoyingAction_image(self):
 
     return channel
 
-async def annoyingAction_voice(self):
-    channel = getRandomVoiceChannel(self)
+async def annoyingAction_voice(self, channel=None):
+    if channel == None:
+        channel = getRandomVoiceChannel(self)
+
+    if channel.guild.voice_client != None:
+        return channel
 
     await channel.connect()
 
@@ -147,47 +153,42 @@ async def random_annoyance(self):
 
         await asyncio.sleep(waittime)
 
+async def targeted_annoyance(self, target):
+    await self.wait_until_ready()
+
+    if target.dm_channel == None:
+        await target.create_dm()
+    targetdm = target.dm_channel
+
+    for i in range(10):
+        if target.voice != None:
+            await annoyingAction_voice(self, target.voice.channel)
+
+        await target.dm_channel.send(target.mention)
+        await asyncio.sleep(random.randint(2, 10))
+
+
 class AnnoyingBot(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
 
     @commands.command()
-    async def join(self, ctx):
-        """Joins a voice channel"""
+    async def target(self, ctx):
+        if ctx.message.mention_everyone or ctx.message.mentions[0].id == self.bot.user.id:
+            await ctx.channel.send("no u")
+            target = ctx.message.author
+        elif len(ctx.message.mentions) == 0:
+            await ctx.channel.send("oi " +ctx.message.author.mention +" u didnt mention anyone >:c")
+            return
+        else:
+            target = ctx.message.mentions[0]
 
-        channel = ctx.author.voice.channel
+        await ctx.channel.send("Targeting " +target.mention +" for 120 seconds.")
 
-        if ctx.voice_client is not None:
-            return await ctx.voice_client.move_to(channel)
+        self.bot.loop.create_task(targeted_annoyance(self.bot, target))
 
-        await channel.connect()
 
-    @commands.command()
-    async def say(self, ctx, *, query):
-        """Plays a file from the local filesystem"""
-
-        ttsfbfe.tts.runTTS(query)
-
-        source = discord.PCMVolumeTransformer(discord.FFmpegPCMAudio("output.wav"))
-        ctx.voice_client.play(source, after=lambda e: print('Player error: %s' % e) if e else None)
-
-    @commands.command()
-    async def leave(self, ctx):
-        if ctx.voice_client is not None:
-            await ctx.voice_client.disconnect()
-
-    @say.before_invoke
-    async def ensure_voice(self, ctx):
-        if ctx.voice_client is None:
-            if ctx.author.voice:
-                await ctx.author.voice.channel.connect()
-            else:
-                await ctx.send("You are not connected to a voice channel.")
-                raise commands.CommandError("Author not connected to a voice channel.")
-        elif ctx.voice_client.is_playing():
-            ctx.voice_client.stop()
-
-#bot.add_cog(AnnoyingBot(bot))
+bot.add_cog(AnnoyingBot(bot))
 bot.loop.create_task(random_annoyance(bot))
 token = open("token.txt").read()
 bot.run(token)
